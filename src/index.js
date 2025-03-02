@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from "react";
-import format from "date-fns/format";
-import differenceInDays from "date-fns/differenceInDays";
+import { format, differenceInDays } from "date-fns";
 import IntroSlides from "./IntroSlides";
 
 const missions = [
   { title: "GRACE", description: "Understanding Grace", prompt: "Think of a time someone helped you without being asked." },
   { title: "GRACE", description: "Inner Reflection on Grace", prompt: "Close your eyes and reflect for 5 minutes on people who have shown you grace." },
-  { title: "GRACE", description: "Sharing Grace", prompt: "Do something nice for someone without expecting anything back." },
+  { title: "GRACE", description: "Sharing Grace", prompt: "Do something nice for someone today without expecting anything back." },
   { title: "GRACE", description: "Transitioning with Grace", prompt: "Write one way you can be more kind and patient this week." },
-  { title: "CLARITY", description: "What Are You?", prompt: "If someone asked, 'Who are you?' what would you say?" }
+  { title: "GRACE", description: "What Are You?", prompt: "If someone asked, 'Who are you?' what would you say?" }
 ];
 
 function EarnThatEnergyApp() {
   const [startDate, setStartDate] = useState(null);
   const [currentMission, setCurrentMission] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
+  const [userResponse, setUserResponse] = useState("");
+
+  // Function to handle response submission
+  const handleSubmit = () => {
+    if (userResponse.trim() === "") {
+      alert("Please enter a response before submitting.");
+      return;
+    }
+    const userEmail = prompt("Enter your email to receive your response:");
+    if (userEmail) {
+      alert(`Response sent to ${userEmail}`);
+      setUserResponse(""); // Clear input after submitting
+    }
+  };
 
   useEffect(() => {
     const savedDate = localStorage.getItem("eteStartDate");
@@ -44,8 +57,23 @@ function EarnThatEnergyApp() {
         {currentMission ? (
           <>
             <h1 className="text-xl font-bold">{currentMission.title}</h1>
-            <h2 className="text-lg font-semibold mt-2">{currentMission.description}</h2>
+            <h2 className="text-lg font-semibold pt-2">{currentMission.description}</h2>
             <p className="mt-4">{currentMission.prompt}</p>
+
+            <textarea
+              className="mt-4 w-full p-2 border rounded"
+              rows="4"
+              placeholder="Write your response here..."
+              value={userResponse}
+              onChange={(e) => setUserResponse(e.target.value)}
+            />
+
+            <button
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+              onClick={handleSubmit}
+            >
+              Submit
+            </button>
           </>
         ) : (
           <p>Loading your journey...</p>
