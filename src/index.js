@@ -1,3 +1,4 @@
+import missions from "./missions";
 import React, { useState, useEffect } from "react";
 import IntroSlides from "./IntroSlides";
 import { format, differenceInDays } from "date-fns";
