@@ -24,7 +24,10 @@ function IntroSlides({ onComplete }) {
       <div className="max-w-xl p-6 bg-white shadow-lg rounded-lg text-center">
         <h1 className="text-xl font-bold">{slides[currentSlide].title}</h1>
         <p className="mt-4">{slides[currentSlide].content}</p>
-        <button onClick={handleNext} className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg">
+        <button
+          className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
+          onClick={handleNext}
+        >
           {currentSlide < slides.length - 1 ? "Next" : "Start"}
         </button>
       </div>
