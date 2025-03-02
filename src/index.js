@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import IntroSlides from "./IntroSlides";
 import missions from "./missions";
 import { format, differenceInDays } from "date-fns";
@@ -8,7 +9,6 @@ function EarnThatEnergyApp() {
     const [currentMission, setCurrentMission] = useState(null);
     const [showIntro, setShowIntro] = useState(true);
     const [userResponse, setUserResponse] = useState("");
-    const [userEmail, setUserEmail] = useState("");
 
     useEffect(() => {
         const savedDate = localStorage.getItem("eteStartDate");
@@ -33,21 +33,11 @@ function EarnThatEnergyApp() {
     }
 
     const handleSubmit = () => {
-        if (userResponse.trim() === "" || userEmail.trim() === "") {
-            alert("Please enter a response and your email to continue.");
+        if (userResponse.trim() === "") {
+            alert("Please enter your response.");
             return;
         }
-
-        // Send email logic
-        fetch("/api/sendResponse", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: userEmail, response: userResponse, mission: currentMission }),
-        })
-        .then(response => response.json())
-        .then(data => alert(data.message))
-        .catch(error => alert("Error sending response"));
-
+        alert("Your response has been submitted!");
         setUserResponse("");
     };
 
@@ -60,21 +50,13 @@ function EarnThatEnergyApp() {
                         <h2 className="text-lg font-semibold pt-2">{currentMission.description}</h2>
                         <p className="mt-4">{currentMission.prompt}</p>
                         <textarea
-                            className="w-full p-2 border rounded mt-4"
-                            rows="4"
+                            className="w-full p-2 border rounded"
                             placeholder="Write your response here..."
                             value={userResponse}
                             onChange={(e) => setUserResponse(e.target.value)}
                         />
-                        <input
-                            type="email"
-                            className="w-full p-2 border rounded mt-2"
-                            placeholder="Enter your email..."
-                            value={userEmail}
-                            onChange={(e) => setUserEmail(e.target.value)}
-                        />
                         <button
-                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                            className="mt-6 px-4 py-2 bg-blue-500 text-white rounded-lg"
                             onClick={handleSubmit}
                         >
                             Submit
@@ -88,4 +70,4 @@ function EarnThatEnergyApp() {
     );
 }
 
-export default EarnThatEnergyApp;
+ReactDOM.render(<EarnThatEnergyApp />, document.getElementById("root"));
